@@ -1,0 +1,1 @@
+Import-AzContext -Path context.json

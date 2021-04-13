@@ -1,0 +1,14 @@
+az group create --name vm-container-rg --location eastus2
+az group create --name middleware-function-app-rg --location eastus2
+az group create --name shared-rg --location eastus2
+
+az automation account create --automation-account-name "avm-aa" --location "East US 2" --resource-group "shared-rg" --sku "Free"
+
+az automation runbook create --automation-account-name "avm-aa" --resource-group "shared-rg" --name "myRunbook" --type "PowerShellWorkflow" --location "East US 2"
+
+az automation runbook replace-content --automation-account-name "avm-aa" --resource-group                "shared-rg" --name "myRunbook" --content @Write-HelloWorld.ps1
+
+az automation runbook publish --automation-account-name "avm-aa" --resource-group "shared-rg" --name "myRunbook"
+
+Publish-AzAutomationRunbook -AutomationAccountName "avm-aa" -Name "Write-HelloWorld" -ResourceGroupName "shared-rg"
+Start-AzAutomationRunbook -ResourceGroupName "shared-rg" -AutomationAccountName "avm-aa" -Name "Write-HelloWorld
